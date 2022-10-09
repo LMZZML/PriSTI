@@ -1,6 +1,6 @@
 # PriSTI: A Conditional Diffusion Framework for Spatiotemporal Imputation
 
-This is the code for our proposed framework GSTI. 
+This is the code for our proposed framework PriSTI. 
 We only provided a part of code about the experiments on AQI-36.
 The complete code will be released after the paper is published.
 
@@ -14,7 +14,7 @@ The data of AQI-36 is in `./data/pm25/`.
 
 ## Experiments
 
-An example of training GSTI on AQI-36 is:
+An example of training PriSTI on AQI-36 is:
 ```
 python exe_aqi36.py --device 'cuda:0' --num_workers 16
 ```
