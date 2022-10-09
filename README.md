@@ -1,4 +1,4 @@
-# Guiding the Conditional Diffusion for Spatiotemporal Imputation
+# PriSTI: A Conditional Diffusion Framework for Spatiotemporal Imputation
 
 This is the code for our proposed framework GSTI. 
 We only provided a part of code about the experiments on AQI-36.
