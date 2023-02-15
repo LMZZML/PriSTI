@@ -28,3 +28,4 @@ model:
   featureemb: 16
   target_strategy: "hybrid"
   use_guide: true
+  mask_sensor: []

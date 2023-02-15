@@ -1,0 +1,31 @@
+
+#type: args
+
+train:
+  epochs: 200
+  batch_size: 4
+  lr: 1.0e-3
+  valid_epoch_interval: 20
+  is_lr_decay: true
+
+diffusion:
+  layers: 4
+  channels: 64    #
+  nheads: 8
+  diffusion_embedding_dim: 128
+  beta_start: 0.0001
+  beta_end: 0.2
+  num_steps: 50
+  schedule: "quad"
+  is_adp: true
+  proj_t: 64
+  is_cross_t: true
+  is_cross_s: true
+
+model:
+  is_unconditional: 0
+  timeemb: 128
+  featureemb: 16
+  target_strategy: "hybrid"
+  use_guide: true
+  mask_sensor: []
