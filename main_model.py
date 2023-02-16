@@ -4,7 +4,7 @@ import torch.nn as nn
 from diff_models import Guide_diff
 
 
-class GSTI(nn.Module):
+class PriSTI(nn.Module):
     def __init__(self, target_dim, seq_len, config, device):
         super().__init__()
         self.device = device
@@ -208,9 +208,9 @@ class GSTI(nn.Module):
         return samples, observed_data, target_mask, observed_mask, observed_tp
 
 
-class GSTI_aqi36(GSTI):
+class PriSTI_aqi36(PriSTI):
     def __init__(self, config, device, target_dim=36, seq_len=36):
-        super(GSTI_aqi36, self).__init__(target_dim, seq_len, config, device)
+        super(PriSTI_aqi36, self).__init__(target_dim, seq_len, config, device)
         self.config = config
 
     def process_data(self, batch):
@@ -245,4 +245,78 @@ class GSTI_aqi36(GSTI):
             cond_mask,
         )
 
+
+
+class PriSTI_MetrLA(PriSTI):
+    def __init__(self, config, device, target_dim=207, seq_len=24):
+        super(PriSTI_MetrLA, self).__init__(target_dim, seq_len, config, device)
+        self.config = config
+
+    def process_data(self, batch):
+        observed_data = batch["observed_data"].to(self.device).float()
+        observed_mask = batch["observed_mask"].to(self.device).float()
+        observed_tp = batch["timepoints"].to(self.device).float()
+        gt_mask = batch["gt_mask"].to(self.device).float()
+        cut_length = batch["cut_length"].to(self.device).long()
+        coeffs = None
+        if self.config['model']['use_guide']:
+            coeffs = batch["coeffs"].to(self.device).float()
+        cond_mask = batch["cond_mask"].to(self.device).float()
+
+        observed_data = observed_data.permute(0, 2, 1)  # [B, K, L]
+        observed_mask = observed_mask.permute(0, 2, 1)
+        gt_mask = gt_mask.permute(0, 2, 1)
+        cond_mask = cond_mask.permute(0, 2, 1)
+        for_pattern_mask = observed_mask
+
+        if self.config['model']['use_guide']:
+            coeffs = coeffs.permute(0, 2, 1)
+
+        return (
+            observed_data,
+            observed_mask,
+            observed_tp,
+            gt_mask,
+            for_pattern_mask,
+            cut_length,
+            coeffs,
+            cond_mask,
+        )
+
+
+class PriSTI_PemsBAY(PriSTI):
+    def __init__(self, config, device, target_dim=325, seq_len=24):
+        super(PriSTI_PemsBAY, self).__init__(target_dim, seq_len, config, device)
+        self.config = config
+
+    def process_data(self, batch):
+        observed_data = batch["observed_data"].to(self.device).float()
+        observed_mask = batch["observed_mask"].to(self.device).float()
+        observed_tp = batch["timepoints"].to(self.device).float()
+        gt_mask = batch["gt_mask"].to(self.device).float()
+        cut_length = batch["cut_length"].to(self.device).long()
+        coeffs = None
+        if self.config['model']['use_guide']:
+            coeffs = batch["coeffs"].to(self.device).float()
+        cond_mask = batch["cond_mask"].to(self.device).float()
+
+        observed_data = observed_data.permute(0, 2, 1)  # [B, K, L]
+        observed_mask = observed_mask.permute(0, 2, 1)
+        gt_mask = gt_mask.permute(0, 2, 1)
+        cond_mask = cond_mask.permute(0, 2, 1)
+        for_pattern_mask = observed_mask
+
+        if self.config['model']['use_guide']:
+            coeffs = coeffs.permute(0, 2, 1)
+
+        return (
+            observed_data,
+            observed_mask,
+            observed_tp,
+            gt_mask,
+            for_pattern_mask,
+            cut_length,
+            coeffs,
+            cond_mask,
+        )
 

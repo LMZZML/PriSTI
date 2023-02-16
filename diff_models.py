@@ -24,6 +24,10 @@ class Guide_diff(nn.Module):
 
         if config["adj_file"] == 'AQI36':
             self.adj = get_adj_AQI36()
+        elif config["adj_file"] == 'metr-la':
+            self.adj = get_similarity_metrla(thr=0.1)
+        elif config["adj_file"] == 'pems-bay':
+            self.adj = get_similarity_pemsbay(thr=0.1)
         self.device = config["device"]
         self.support = compute_support_gwn(self.adj, device=config["device"])
         self.is_adp = config["is_adp"]

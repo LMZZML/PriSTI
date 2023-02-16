@@ -76,6 +76,12 @@ class AQI36_Dataset(Dataset):
             # mask values for observed indices are 1
             c_mask = 1 - current_df.isnull().values
             c_gt_mask = 1 - current_df_gt.isnull().values
+            if len(self.mask_sensor) > 0:
+                for sensor in self.mask_sensor:
+                    c_gt_mask[:, sensor] = 0
+                if self.mode == 'train':
+                    for sensor in self.mask_sensor:
+                        c_mask[:, sensor] = 0
             c_data = (
                 (current_df.fillna(0).values - self.train_mean) / self.train_std
             ) * c_mask
@@ -166,16 +172,16 @@ class AQI36_Dataset(Dataset):
         return len(self.use_index)
 
 
-def get_dataloader(batch_size, device, val_len=0.1, is_interpolate=False, num_workers=4, target_strategy='hybrid'):
-    dataset = AQI36_Dataset(mode="train", is_interpolate=is_interpolate, target_strategy=target_strategy)
+def get_dataloader(batch_size, device, val_len=0.1, is_interpolate=False, num_workers=4, target_strategy='hybrid', mask_sensor=None):
+    dataset = AQI36_Dataset(mode="train", is_interpolate=is_interpolate, target_strategy=target_strategy, mask_sensor=mask_sensor)
     train_loader = DataLoader(
         dataset, batch_size=batch_size, num_workers=num_workers, shuffle=True
     )
-    dataset_test = AQI36_Dataset(mode="test", is_interpolate=is_interpolate, target_strategy=target_strategy)
+    dataset_test = AQI36_Dataset(mode="test", is_interpolate=is_interpolate, target_strategy=target_strategy, mask_sensor=mask_sensor)
     test_loader = DataLoader(
         dataset_test, batch_size=batch_size, num_workers=num_workers, shuffle=False
     )
-    dataset_valid = AQI36_Dataset(mode="valid", val_len=val_len, is_interpolate=is_interpolate, target_strategy=target_strategy)
+    dataset_valid = AQI36_Dataset(mode="valid", val_len=val_len, is_interpolate=is_interpolate, target_strategy=target_strategy, mask_sensor=mask_sensor)
     valid_loader = DataLoader(
         dataset_valid, batch_size=batch_size, num_workers=num_workers, shuffle=False
     )
