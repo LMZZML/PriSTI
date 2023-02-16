@@ -49,9 +49,9 @@ python exe_pemsbay.py --device 'cuda:0' --num_workers 16
 
 You can directly use our provided trained model for imputation:
 ```
-python exe_aqi36.py --device 'cuda:0' --num_workers 16 --modelfolders 'aqi36'
-python exe_metrla.py --device 'cuda:0' --num_workers 16 --modelfolders 'metr_la'
-python exe_pemsbay.py --device 'cuda:0' --num_workers 16 --modelfolders 'pems_bay'
+python exe_aqi36.py --device 'cuda:0' --num_workers 16 --modelfolder 'aqi36'
+python exe_metrla.py --device 'cuda:0' --num_workers 16 --modelfolder 'metr_la'
+python exe_pemsbay.py --device 'cuda:0' --num_workers 16 --modelfolder 'pems_bay'
 ```
 
 
