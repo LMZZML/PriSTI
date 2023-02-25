@@ -54,6 +54,16 @@ python exe_metrla.py --device 'cuda:0' --num_workers 16 --modelfolder 'metr_la'
 python exe_pemsbay.py --device 'cuda:0' --num_workers 16 --modelfolder 'pems_bay'
 ```
 
+## Citation
+
+```bibtex
+@article{liu2023pristi,
+  title={PriSTI: A Conditional Diffusion Framework for Spatiotemporal Imputation},
+  author={Liu, Mingzhe and Huang, Han and Feng, Hao and Sun, Leilei and Du, Bowen and Fu, Yanjie},
+  journal={arXiv preprint arXiv:2302.09746},
+  year={2023}
+}
+```
 
 
 
