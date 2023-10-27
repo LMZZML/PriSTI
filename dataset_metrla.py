@@ -93,6 +93,7 @@ class MetrLA_Dataset(Dataset):
             self.observed_mask = ob_mask[test_start:]
             self.gt_mask = gt_mask[test_start:]
             self.observed_data = c_data[test_start:]
+
         current_length = len(self.observed_mask) - eval_length + 1
 
         if mode == "test":
@@ -110,7 +111,7 @@ class MetrLA_Dataset(Dataset):
             self.cut_length = [0] * len(self.use_index)
 
     def __getitem__(self, org_index):
-        index = org_index
+        index = self.use_index[org_index]
         ob_data = self.observed_data[index: index + self.eval_length]
         ob_mask = self.observed_mask[index: index + self.eval_length]
         ob_mask_t = torch.tensor(ob_mask).float()
@@ -130,7 +131,7 @@ class MetrLA_Dataset(Dataset):
             "observed_mask": ob_mask,
             "gt_mask": gt_mask,
             "timepoints": np.arange(self.eval_length),
-            "cut_length": self.cut_length[index],
+            "cut_length": self.cut_length[org_index],
             "cond_mask": cond_mask.numpy()
         }
         if self.is_interpolate:
@@ -187,4 +188,3 @@ def get_test_randmask(observed_mask, missing_ratio):
 
     cond_mask = (rand_for_mask > 0).reshape(observed_mask.shape).float()
     return cond_mask
-
